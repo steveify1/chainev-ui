@@ -12,7 +12,7 @@ export const Nav = () => {
       <Container>
         <div className={styles.navInner}>
           <div className={styles.navLogo}>
-            <img src="/logo.svg" alt="logo" width={60} height={60} />
+            <Image src="/logo.svg" alt="logo" width={60} height={60} />
           </div>
 
           <div className={styles.navRight}>
