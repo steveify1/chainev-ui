@@ -44,7 +44,7 @@ export const Button = (props: ButtonProps) => {
     <div
       className={`
         ${styles.button} ${resolveTypeStyle()} 
-        ${resolveShapeStyle()} ${resolveSizeStyle()}`}
+        ${resolveShapeStyle()} ${resolveSizeStyle()} ${props.className}`}
     >
       {props.children}
     </div>

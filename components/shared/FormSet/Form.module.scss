@@ -1,0 +1,50 @@
+@import '../../../styles/variables.scss';
+
+.formField {
+  width: 100%;
+  margin: 0px 0px 16px;
+}
+
+.label {
+  font-weight: 600;
+  margin: 4px 2px;
+}
+
+.input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 2px solid $primaryColorLight;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #333;
+
+  &:focus {
+    outline: none;
+    border-color: $primaryColor;
+  }
+  
+  
+  @media screen and (min-width: 768px) {
+    padding: 16px 18px;
+  }
+}
+
+.passwordInputContainer {
+  position: relative;
+  
+  .passwordInputToggler {
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    transform: translateY(-50%);
+    padding: 4px 8px;
+    cursor: pointer;
+    color: $primaryColor;
+    font-weight: 600;
+    font-size: 0.85rem;
+  
+    @media screen and (min-width: 768px) {
+      padding: 8px 16px;
+    }
+  }
+}

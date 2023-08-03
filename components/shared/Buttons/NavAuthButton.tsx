@@ -6,8 +6,6 @@ import { Button } from "./Button";
 export const NavAuthButton = (props: NavAuthButtonProps) => {
   const router = useRouter();
 
-  console.log("Hello boss", { router });
-
   return (
     <div>
       {router.pathname == "/" ? (
