@@ -1,0 +1,36 @@
+@import '../../../styles/variables.scss';
+
+.sidebar {
+  background-color: #ffffff;
+}
+
+.sidebarInner {
+  height: calc(100vh );
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8rem 0 4rem;
+}
+
+.menu {
+  li:not(:last-child) {
+    margin-bottom: 2rem;
+  }
+
+  .menuItemLink {
+    &.inactiveLink {
+      color: black;
+    }
+  }
+}
+
+.logoutBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: red !important;
+  width: 100%;
+  font-size: 1rem !important;
+  border: none !important;
+}

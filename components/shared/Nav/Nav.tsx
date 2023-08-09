@@ -5,7 +5,7 @@ import { Button } from "../Buttons/Button";
 import { NavAuthButton } from "../Buttons";
 
 export const Nav = () => {
-  const isLogged = false;
+  const isLogged = true;
 
   return (
     <div className={styles.nav}>

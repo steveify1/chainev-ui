@@ -1,0 +1,9 @@
+.dashboard {
+  display: grid;
+  grid-template-columns: 300px auto;
+  height: 100vh;
+}
+
+.dashboardInner {
+  padding-top: 8rem;
+}
