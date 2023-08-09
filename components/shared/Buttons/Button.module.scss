@@ -1,6 +1,6 @@
 .button {
   background-color: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid #007DFC;
   color: #333;
   cursor: pointer;
   display: inline-block;
@@ -16,7 +16,6 @@
 
   &.primary {
     background-color: #007DFC;
-    border: 1px solid #007DFC;
     color: #fff;
   }
 

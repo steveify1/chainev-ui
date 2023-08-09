@@ -50,9 +50,9 @@ export const SideBar = () => {
               <Button className={styles.logoutBtn}>
                 <span>Logout</span>
                 <Image
-                  src={"/logo.png"}
-                  width={30}
-                  height={30}
+                  src={"/log-out.png"}
+                  width={20}
+                  height={20}
                   alt="logout icon"
                 />
               </Button>

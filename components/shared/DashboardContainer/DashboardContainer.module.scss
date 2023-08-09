@@ -1,9 +1,13 @@
-.dashboard {
+.dashboardContainer {
   display: grid;
   grid-template-columns: 300px auto;
   height: 100vh;
 }
 
-.dashboardInner {
+.dashboardContainerInner {
   padding-top: 8rem;
+}
+
+.pageTitle {
+  margin-bottom: 1.5rem;
 }

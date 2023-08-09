@@ -1,0 +1,61 @@
+@import '../../../styles/variables.scss';
+
+.events {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.event {
+  .eventInner {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(auto, 1fr));
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0.5rem 1rem !important;
+
+    .createdAt {
+      opacity: 0.6;
+    }
+  
+    .networkType {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: $primaryColorLight !important;
+      color: black !important;
+      width: fit-content;
+      border: none !important;
+      font-size: 0.85rem !important;
+      position: relative;
+      
+      &.mainnet {
+        background-color: $lightGreen;
+      }
+    }
+
+    .eventPayloadViewContainer {
+      display: flex;
+      justify-content: end;
+    }
+
+    .copyButtonContainer {
+      display: flex;
+      justify-content: end;
+
+      .copyButton {
+        background-color: $primaryColorLight !important;
+        border: none;
+        color: #000;
+        display: flex;
+        align-items: center;
+
+        .copyIcon {
+          object-fit: contain;
+        }
+      }
+    }
+  }
+}
+

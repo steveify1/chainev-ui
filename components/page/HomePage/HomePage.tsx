@@ -1,5 +1,5 @@
 import { Container } from "../../shared/Container/Container";
-import styles from "./LoginPage.module.scss";
+import styles from "./HomePage.module.scss";
 import { Button } from "../../shared/Buttons/Button";
 import { PageWapper } from "../../shared/PageWrapper/PageWapper";
 import {
@@ -9,42 +9,76 @@ import {
 } from "../../shared/FormSet/FormField";
 import { Card } from "../../shared/Card/Card";
 import { Link } from "../../shared/Link/Link";
+import { DashboardContainer } from "../../shared/DashboardContainer/DashboardContainer";
+import { useEffect, useState } from "react";
+import { Project } from "../../shared/Project/Project";
+import { Section } from "../../shared/Section/Section";
+import { Events } from "../../shared/Events/Events";
 
-export const LoginPage = () => {
+export const HomePage = () => {
+  const [recentProjects, setRecentProjects] = useState<any[]>([]);
+
+  const fetchRecentProjects = async () => {
+    setRecentProjects([
+      {
+        id: "dfdffd",
+        name: "IvoryPay PG",
+        numEnvironments: 2,
+        numEvents: 8,
+      },
+      {
+        id: "dfdffd",
+        name: "IvoryPay PG",
+        numEnvironments: 2,
+        numEvents: 8,
+      },
+      {
+        id: "dfdffd",
+        name: "IvoryPay PG",
+        numEnvironments: 2,
+        numEvents: 8,
+      },
+    ]);
+  };
+
+  useEffect(() => {
+    fetchRecentProjects();
+  }, []);
+
   return (
-    <PageWapper>
-      <Container>
-        <Card className={styles.loginCard}>
-          <div className={styles.header}>
-            <h3 className={styles.heading}>Login it to your account.</h3>
-            <p className={styles.subheading}>
-              <span>You don't have an account? </span>
-              <Link href={"/register"} className={styles.link}>
-                Create account
-              </Link>
-            </p>
-          </div>
-
-          <form>
-            <FormField label="Email">
-              <Input type="email" placeholder="Enter your email" />
-            </FormField>
-
-            <FormField label="Password">
-              <PasswordInput
-                placeholder="Enter your password"
-                useToggle={true}
-              />
-            </FormField>
-
-            <Link href="/">
-              <Button shape="curved" className={styles.button} size="large">
-                Login
+    <DashboardContainer title="Dashboard">
+      <Section>
+        <Card>
+          <header className={styles.recentProjectsHeader}>
+            <h3 className={styles.sectionTitle}>Top Projects</h3>
+            <Link href={`/projects`}>
+              <Button className={styles.button} size="small" type="secondary">
+                See all
               </Button>
             </Link>
-          </form>
+          </header>
+
+          <div className={styles.projects}>
+            {recentProjects.map((project, i) => (
+              <Project
+                key={`recent-project-${i}`}
+                className={styles.project}
+                project={project}
+              />
+            ))}
+          </div>
         </Card>
-      </Container>
-    </PageWapper>
+      </Section>
+
+      <Section>
+        <Card>
+          <h3 className={styles.sectionTitle}>Recent Events</h3>
+
+          <div className={styles.events}>
+            <Events />
+          </div>
+        </Card>
+      </Section>
+    </DashboardContainer>
   );
 };

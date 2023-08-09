@@ -41,12 +41,13 @@ export const Button = (props: ButtonProps) => {
   };
 
   return (
-    <div
+    <button
       className={`
         ${styles.button} ${resolveTypeStyle()} 
         ${resolveShapeStyle()} ${resolveSizeStyle()} ${props.className}`}
+      onClick={props.onClick}
     >
       {props.children}
-    </div>
+    </button>
   );
 };
