@@ -1,0 +1,33 @@
+@import '../../../styles/variables.scss';
+
+.projectHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  
+  .sectionTitle {
+    margin-bottom: 0;
+  }
+}
+
+.sectionTitle {
+  margin-bottom: 1rem;
+}
+
+.projectStatsCard {
+  padding: 1.25rem;
+
+  .projectStats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(auto, 100%));
+    gap: 1rem;
+    justify-content: space-between;
+    
+    .projectStatName {
+      color: $grey;
+      font-weight: 400;
+      margin-bottom: 0.5rem;
+    }
+  }
+}

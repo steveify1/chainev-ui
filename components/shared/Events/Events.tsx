@@ -17,6 +17,8 @@ export const Events = (props: EventsProps) => {
   const [events, setEvents] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
+  console.log({ props });
+
   const fetchEvents = async () => {
     if (isLoading) return;
     setIsLoading(true);

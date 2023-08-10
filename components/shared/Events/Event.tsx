@@ -17,6 +17,11 @@ interface EventProps {
   payload: any;
 }
 
+const NetworkTypeMap: { [T: string]: string } = {
+  TESTNET: "Testnet",
+  MAINNET: "Mainnet",
+};
+
 export const Event = (props: EventProps) => {
   const [copied, setCopied] = useState<boolean>(false);
 
@@ -37,8 +42,12 @@ export const Event = (props: EventProps) => {
 
         <p className={styles.createdAt}>{props.createdAt}</p>
 
-        <Button className={styles.networkType}>
-          <span>{props.networkType}</span>
+        <Button
+          className={`${styles.networkType} ${
+            props.networkType === "MAINNET" ? styles.mainnet : null
+          }`}
+        >
+          {NetworkTypeMap[props.networkType]}
         </Button>
 
         <div className={styles.eventPayloadViewContainer}>

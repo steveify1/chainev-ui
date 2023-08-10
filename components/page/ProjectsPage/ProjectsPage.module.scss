@@ -1,0 +1,8 @@
+@import '../../../styles/variables.scss';
+
+.projects {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(auto, 100%));
+  gap: 1rem;
+  justify-content: space-between;
+}

@@ -17,7 +17,7 @@ export const DashboardContainer = (props: DashboardContainerProps) => {
         <div className={styles.dashboardContainerInner}>
           <Container>
             {props.title ? (
-              <h1 className={styles.pageTitle}>Dashboard</h1>
+              <h1 className={styles.pageTitle}>{props.title}</h1>
             ) : null}
             {props.children}
           </Container>
