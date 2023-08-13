@@ -1,4 +1,4 @@
-@import '../../../styles/variables.scss';
+@import "../../../styles/variables.scss";
 
 .formField {
   width: 100%;
@@ -22,8 +22,7 @@
     outline: none;
     border-color: $primaryColor;
   }
-  
-  
+
   @media screen and (min-width: 768px) {
     padding: 16px 18px;
   }
@@ -31,7 +30,7 @@
 
 .passwordInputContainer {
   position: relative;
-  
+
   .passwordInputToggler {
     position: absolute;
     top: 50%;
@@ -42,9 +41,221 @@
     color: $primaryColor;
     font-weight: 600;
     font-size: 0.85rem;
-  
+
     @media screen and (min-width: 768px) {
       padding: 8px 16px;
+    }
+  }
+}
+
+.inputIcon {
+  object-fit: contain;
+}
+
+.fileInputContainer {
+  &:focus {
+    outline: none;
+    border-color: $primaryColor;
+  }
+
+  .fileInputContainerInner {
+    border: 2px dashed $primaryColorLight;
+    border-radius: 8px;
+    position: relative;
+    margin-bottom: 0.5rem;
+
+    &:focus {
+      outline: none;
+      border-color: $primaryColor;
+    }
+  }
+
+  .input {
+    opacity: 0;
+    border: none;
+    outline: none;
+    position: sticky;
+    z-index: 10;
+    cursor: pointer;
+  }
+
+  .fileInputPlaceholder {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .fileSelectionIndicatorContainer {
+    background-color: $lightGreen;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+
+    p {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .fileInputResetIcon {
+      cursor: pointer;
+    }
+  }
+}
+
+.networkTypesInputContainer {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap: 1rem;
+
+  .networkTypeInputContainer {
+    position: relative;
+
+    span {
+      position: absolute;
+      top: 50%;
+      left: 10%;
+      transform: translate(-10%, -50%);
+      cursor: none;
+    }
+
+    .networkTypeInputIndicator {
+      position: absolute;
+      top: 50%;
+      right: 10%;
+      transform: translate(-10%, -50%);
+      height: 8px;
+      width: 8px;
+      background-color: #333;
+      border-radius: 50%;
+      opacity: 0;
+    }
+
+    .input {
+      color: rgb(0, 0, 0, 0);
+      cursor: pointer;
+      position: sticky;
+      z-index: 10;
+      background-color: transparent;
+    }
+
+    .networkTypeInputIndicator,
+    .input {
+      transition: all 0.4s ease-in-out;
+    }
+
+    &.networkTypeInputContainerTestnet {
+      .networkTypeInputIndicator {
+        background-color: $primaryColor;
+      }
+    }
+
+    &.networkTypeInputContainerMainnet {
+      .networkTypeInputIndicator {
+        background-color: $green;
+      }
+
+      .input {
+        border-color: $lightGreen;
+      }
+    }
+
+    &.neworkTypeInputActive {
+      .networkTypeInputIndicator {
+        opacity: 1;
+      }
+
+      &.networkTypeInputContainerTestnet {
+        .input {
+          border-color: $primaryColor;
+        }
+      }
+
+      &.networkTypeInputContainerMainnet {
+        .input {
+          border-color: $green;
+        }
+      }
+    }
+  }
+}
+
+.checkboxesInputContainer {
+  .checkboxesInputContainerInner {
+    display: flex;
+    gap: 0.5rem 1rem;
+    border: none;
+    flex-wrap: wrap;
+
+    .checkboxInputContainer {
+      display: flex;
+      // background-color: red;
+      gap: 0.5rem;
+      position: relative;
+    }
+
+    /* Hide the default checkbox */
+    .input {
+      visibility: hidden;
+    }
+
+    /* Creating a custom checkbox based on demand */
+    .checkboxInputGeekmark {
+      position: absolute;
+      top: 50%;
+      left: 2%;
+      -webkit-transform: translate(2%, -50%);
+      -ms-transform: translate(2%, -50%);
+      transform: translate(2%, -50%);
+      height: 12px;
+      width: 12px;
+      border-radius: 2px;
+      border: 1px solid $primaryColor;
+    }
+
+    /* Specify the background color to be hown when hovering over checkbox */
+    .input ~ .checkboxInputGeekmark {
+      background-color: #fff;
+    }
+
+    /* Specify the background color to be shown when checkbox is active */
+    .input:active ~ .checkboxInputGeekmark {
+      background-color: $primaryColor;
+    }
+
+    /* Specify the background color to be shown when checkbox is checked */
+    .input:checked ~ .checkboxInputGeekmark {
+      background-color: $primaryColorLight;
+    }
+
+    /* Checkmark to be shown in checkbox */
+    /* It is not be shown when not checked */
+    .checkboxInputGeekmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+
+    .input:checked ~ .checkboxInputGeekmark:after {
+      display: block;
+    }
+
+    .checkboxInputGeekmark:after {
+      left: 3px;
+      bottom: 1px;
+      width: 3px;
+      height: 8px;
+      border: solid $primaryColor;
+      border-width: 0 2px 2px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(40deg);
     }
   }
 }

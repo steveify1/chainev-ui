@@ -7,23 +7,34 @@ export interface ModalProps {
   className?: string;
   title: string;
   trigger: any;
+  lock?: boolean;
+  onClose?: Function;
 }
 
 export const Modal = (props: ModalProps) => {
   const [show, setShow] = useState<boolean>(false);
+
+  const handleCloseTrigger = () => {
+    if (props.lock) return;
+    setShow(false);
+
+    if (typeof props.onClose === "function") {
+      props.onClose();
+    }
+  };
 
   return (
     <div className={`${styles.modal} ${props.className}`}>
       <div className={`${styles.modalContent} ${show ? styles.show : null}`}>
         <div
           className={styles.modalDropShadow}
-          onClick={() => setShow(false)}
+          onClick={handleCloseTrigger}
         ></div>
         <Card className={styles.modalContentInner}>
           <div className={styles.modalContentHeader}>
             <h3 className={styles.modalContentTitle}>{props.title}</h3>
             <img
-              onClick={() => setShow(false)}
+              onClick={handleCloseTrigger}
               src="/x.png"
               className={styles.modalCloseIcon}
             />

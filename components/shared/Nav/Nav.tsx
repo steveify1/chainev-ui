@@ -3,6 +3,9 @@ import { Container } from "../Container/Container";
 import styles from "./Nav.module.scss";
 import { Button } from "../Buttons/Button";
 import { NavAuthButton } from "../Buttons";
+import { Modal } from "../Modal/Modal";
+import { CreateProjectForm } from "../FormSet/CreateProjectForm";
+import Link from "next/link";
 
 export const Nav = () => {
   const isLogged = true;
@@ -11,13 +14,18 @@ export const Nav = () => {
     <div className={styles.nav}>
       <Container>
         <div className={styles.navInner}>
-          <div className={styles.navLogo}>
+          <Link href={"/"} className={styles.navLogo}>
             <Image src="/logo.svg" alt="logo" width={60} height={60} />
-          </div>
+          </Link>
 
           <div className={styles.navRight}>
             {isLogged ? (
-              <Button shape="oval">Create Project</Button>
+              <Modal
+                title="Create Project"
+                trigger={<Button shape="oval">Create Project</Button>}
+              >
+                <CreateProjectForm />
+              </Modal>
             ) : (
               <NavAuthButton className={styles.menu} />
             )}

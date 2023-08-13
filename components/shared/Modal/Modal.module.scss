@@ -23,8 +23,8 @@
     
       .modalContentInner {
         position: fixed;
-        height: 100%;
-        max-height: 70%;
+        height: fit-content;
+        max-height: 90%;
         width: 100%;
         max-width: 600px;
         top: 50%;

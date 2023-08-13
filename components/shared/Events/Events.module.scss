@@ -38,12 +38,12 @@
 
     .eventPayloadViewContainer {
       display: flex;
-      justify-content: end;
+      justify-content: flex-end;
     }
 
     .copyButtonContainer {
       display: flex;
-      justify-content: end;
+      justify-content: flex-end;
 
       .copyButton {
         background-color: $primaryColorLight !important;

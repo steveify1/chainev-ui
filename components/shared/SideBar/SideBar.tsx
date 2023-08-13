@@ -19,6 +19,16 @@ const menuItems = [
 export const SideBar = () => {
   const router = useRouter();
 
+  const checkIsActiveMenuItem = (menuItemHref: string) => {
+    const { route } = router;
+
+    if (menuItemHref !== "/") {
+      return route.startsWith(menuItemHref);
+    } else {
+      return menuItemHref === route;
+    }
+  };
+
   return (
     <div className={styles.sidebar}>
       <Container>
@@ -27,15 +37,15 @@ export const SideBar = () => {
             {menuItems.map((item, i: number) => {
               return (
                 <li
-                  className={`${styles.menuItem} ${router.pathname}`}
+                  className={`${styles.menuItem}`}
                   key={`sidebar-menu-item-${i}`}
                 >
                   <Link
                     href={item.href}
                     className={`${styles.menuItemLink} ${
-                      !router.pathname.includes(item.href)
-                        ? styles.inactiveLink
-                        : ""
+                      checkIsActiveMenuItem(item.href)
+                        ? null
+                        : styles.inactiveLink
                     }`}
                   >
                     {item.name}
