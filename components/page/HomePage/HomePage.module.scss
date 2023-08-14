@@ -1,0 +1,27 @@
+@import '../../../styles/variables.scss';
+
+.recentProjectsHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  
+  .sectionTitle {
+    margin-bottom: 0;
+  }
+}
+
+.sectionTitle {
+  margin-bottom: 1rem;
+}
+
+.projects {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(auto, 100%));
+  gap: 1rem;
+  justify-content: space-between;
+
+  .project {
+    background-color: #f5f5f5;
+  }
+}

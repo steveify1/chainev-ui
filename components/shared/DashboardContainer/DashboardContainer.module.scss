@@ -1,0 +1,17 @@
+.dashboardContainer {
+  display: grid;
+  grid-template-columns: 300px auto;
+  height: 100vh;
+}
+
+.dashboardContainerInner {
+  padding-top: 8rem;
+}
+
+.dashboardContainerScroller {
+  padding-bottom: 4rem;
+}
+
+.pageTitle {
+  margin-bottom: 1.5rem;
+}

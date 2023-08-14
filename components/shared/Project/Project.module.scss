@@ -1,0 +1,37 @@
+@import '../../../styles/variables.scss';
+
+.project {
+  padding: 1rem;
+  color: black;
+}
+
+.name {
+  margin-bottom: 0.5rem;
+}
+
+.numEnvironments {
+  opacity: 0.4;
+  margin-bottom: 1.5rem;
+}
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $primaryColorLight !important;
+  color: black !important;
+  width: fit-content;
+  border: none !important;
+  font-size: 0.85rem !important;
+  position: relative;
+
+  span {
+    margin-right: 1rem;
+  }
+
+  .bellIcon {
+    object-fit: contain;
+    width: 100%;
+    
+  }
+}
