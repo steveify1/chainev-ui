@@ -13,56 +13,20 @@ import { DashboardContainer } from "../../shared/DashboardContainer/DashboardCon
 import { useEffect, useState } from "react";
 import { Project } from "../../shared/Project/Project";
 import { Section } from "../../shared/Section/Section";
-import { Events } from "../../shared/Events/Events";
+import { toast } from "react-toastify";
+import api from "../../../utils/api";
 
 export const ProjectsPage = () => {
   const [projects, setProjects] = useState<any[]>([]);
 
   const fetchProjects = async () => {
-    setProjects([
-      {
-        id: "dfdffd",
-        name: "IvoryPay PG",
-        numEnvironments: 2,
-        numEvents: 8,
-      },
-      {
-        id: "dfdffd",
-        name: "IvoryPay PG",
-        numEnvironments: 2,
-        numEvents: 8,
-      },
-      {
-        id: "dfdffd",
-        name: "IvoryPay PG",
-        numEnvironments: 2,
-        numEvents: 8,
-      },
-      {
-        id: "dfdffd",
-        name: "IvoryPay PG",
-        numEnvironments: 2,
-        numEvents: 8,
-      },
-      {
-        id: "dfdffd",
-        name: "IvoryPay PG",
-        numEnvironments: 2,
-        numEvents: 8,
-      },
-      {
-        id: "dfdffd",
-        name: "IvoryPay PG",
-        numEnvironments: 2,
-        numEvents: 8,
-      },
-      {
-        id: "dfdffd",
-        name: "IvoryPay PG",
-        numEnvironments: 2,
-        numEvents: 8,
-      },
-    ]);
+    try {
+      const response = await api.getProjects({ limit: 10 });
+      const { records } = response.data;
+      setProjects(records);
+    } catch (error: any) {
+      toast(error.message);
+    }
   };
 
   useEffect(() => {

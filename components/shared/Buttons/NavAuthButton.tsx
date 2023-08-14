@@ -9,7 +9,7 @@ export const NavAuthButton = (props: NavAuthButtonProps) => {
 
   return (
     <div>
-      {router.pathname == "/" ? (
+      {router.pathname == "/login" ? (
         <Link href="/register" className={styles.navButtonLink}>
           <Button className={styles.navButton} shape="oval">
             Create account

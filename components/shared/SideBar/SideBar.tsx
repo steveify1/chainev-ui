@@ -4,6 +4,10 @@ import { Button } from "../../shared/Buttons/Button";
 import { Link } from "../../shared/Link/Link";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import { useContext } from "react";
+import { AuthContext } from "../../../utils/context";
+import { navigator } from "../../../utils/navigator.utils";
+import useLocalStorage from "use-local-storage";
 
 const menuItems = [
   {
@@ -18,6 +22,12 @@ const menuItems = [
 
 export const SideBar = () => {
   const router = useRouter();
+
+  const handleLogout = () => {
+    navigator.localStorage.remove("auth");
+    navigator.localStorage.remove("token");
+    router.push("/login");
+  };
 
   const checkIsActiveMenuItem = (menuItemHref: string) => {
     const { route } = router;
@@ -56,17 +66,15 @@ export const SideBar = () => {
           </ul>
 
           <footer>
-            <Link href="/logout">
-              <Button className={styles.logoutBtn}>
-                <span>Logout</span>
-                <Image
-                  src={"/log-out.png"}
-                  width={20}
-                  height={20}
-                  alt="logout icon"
-                />
-              </Button>
-            </Link>
+            <Button className={styles.logoutBtn} onClick={handleLogout}>
+              <span>Logout</span>
+              <Image
+                src={"/log-out.png"}
+                width={20}
+                height={20}
+                alt="logout icon"
+              />
+            </Button>
           </footer>
         </div>
       </Container>

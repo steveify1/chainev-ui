@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   CheckboxInput,
   FileInput,
@@ -10,18 +10,21 @@ import { navigator } from "../../../utils/navigator.utils";
 import { Button } from "../Buttons";
 import styles from "./CreateProjectForm.module.scss";
 import api from "../../../utils/api";
+import { toast } from "react-toastify";
+import { Scroller } from "../Scroller/Scroller";
+import { AuthContext } from "../../../utils/context";
 
-interface CreateProjectInput {
-  name?: string;
-  address?: string;
-  networkType?: string;
-  abi?: string;
-  eventNames?: string[];
-  webhookUrl?: string;
-}
+const initialFormData = {
+  name: "",
+  address: "",
+  networkType: "",
+  abi: "",
+  eventNames: [],
+  webhookUrl: "",
+};
 
 export const CreateProjectForm = () => {
-  const [formFields, setFormFields] = useState<CreateProjectInput>({});
+  const [formFields, setFormFields] = useState(initialFormData);
   const [availableEventNames, setAvailableEventNames] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -54,17 +57,25 @@ export const CreateProjectForm = () => {
     const file = files[0];
 
     if (file?.type !== "application/json") {
-      console.log("No JSON file detected");
+      toast("No JSON file detected");
     } else {
-      const fileContentAsString = await file.text();
-      handleInputChange({ target: { name, value: fileContentAsString } });
-      const parsed = JSON.parse(fileContentAsString);
+      const fileContentAsJSONString = await file.text();
+      const parsed = JSON.parse(fileContentAsJSONString);
+
       if (!Array.isArray(parsed)) {
-        navigator.notify("I no like stress. Upload only your ABI as JSON");
-        return;
+        return toast("Upload your ABI array as a JSON file", {
+          type: "error",
+        });
       }
 
-      setAvailableEventNames(parseAvailableEventNames(parsed));
+      const parsedEventNames = parseAvailableEventNames(parsed);
+
+      if (!parsedEventNames.length) {
+        return toast("No events found in ABI", { type: "error" });
+      }
+
+      handleInputChange({ target: { name, value: fileContentAsJSONString } });
+      setAvailableEventNames(parsedEventNames);
     }
   };
 
@@ -78,16 +89,14 @@ export const CreateProjectForm = () => {
 
   const handleFormSubmission = async (e: any) => {
     e.preventDefault();
-    console.log(formFields);
 
     if (isLoading) return;
     setIsLoading(true);
 
     try {
       const response = await api.createProject(formFields);
-      console.log(response);
-    } catch (error) {
-      // TODO: Handle error
+    } catch (error: any) {
+      toast(error.message, { type: "error" });
     }
 
     setIsLoading(false);
@@ -95,67 +104,73 @@ export const CreateProjectForm = () => {
 
   return (
     <form>
-      <FormField label="Unique project name">
-        <Input
-          placeholder="Enter unique project name"
-          name="name"
-          value={formFields.name}
-          onChange={handleInputChange}
-        />
-      </FormField>
-
-      <FormField label="Network Type">
-        <NetworkTypeRadioInput
-          name="networkType"
-          onChange={handleInputChange}
-        />
-      </FormField>
-
-      <FormField label="ABI">
-        <FileInput
-          placeholder={"Upload ABI as .json file"}
-          name="abi"
-          accept=".json"
-          onChange={handleAbiFileInputChange}
-          onReset={handleAbiFileInputReset}
-        />
-      </FormField>
-
-      <FormField label="Select Events">
-        {availableEventNames.length ? (
-          <CheckboxInput
-            name="eventNames"
-            value={formFields.address}
-            onChange={handleCheckboxInputChange}
-            options={availableEventNames.map((e, i) => ({
-              label: e,
-              value: e,
-            }))}
+      <Scroller maxHeight={550}>
+        <FormField label="Unique project name">
+          <Input
+            placeholder="Enter unique project name"
+            name="name"
+            value={formFields.name}
+            onChange={handleInputChange}
           />
-        ) : (
-          <p style={{ textAlign: "center", opacity: 0.5 }}>
-            Upload ABI file to select events
-          </p>
-        )}
-      </FormField>
+        </FormField>
 
-      <FormField label="Address">
-        <Input
-          placeholder="Enter Address"
-          name="address"
-          value={formFields.address}
-          onChange={handleInputChange}
-        />
-      </FormField>
+        <FormField label="ABI">
+          <FileInput
+            placeholder={"Upload ABI as .json file"}
+            name="abi"
+            accept=".json"
+            onChange={handleAbiFileInputChange}
+            onReset={handleAbiFileInputReset}
+          />
+        </FormField>
 
-      <FormField label="Webhook URL">
-        <Input
-          placeholder="Enter webhook url"
-          name="webhookUrl"
-          value={formFields.webhookUrl}
-          onChange={handleInputChange}
-        />
-      </FormField>
+        <FormField label="Select Events">
+          {availableEventNames.length ? (
+            <CheckboxInput
+              name="eventNames"
+              value={formFields.address}
+              onChange={handleCheckboxInputChange}
+              options={availableEventNames.map((e, i) => ({
+                label: e,
+                value: e,
+              }))}
+            />
+          ) : (
+            <p style={{ textAlign: "center", opacity: 0.5 }}>
+              Upload ABI file to select events
+            </p>
+          )}
+        </FormField>
+
+        <br />
+        <h4>Environment configuration</h4>
+        <br />
+
+        <FormField label="Network Type">
+          <NetworkTypeRadioInput
+            name="networkType"
+            onChange={handleInputChange}
+          />
+        </FormField>
+
+        <FormField label="Address">
+          <Input
+            placeholder="Enter Address"
+            name="address"
+            value={formFields.address}
+            onChange={handleInputChange}
+          />
+        </FormField>
+
+        <FormField label="Webhook URL">
+          <Input
+            placeholder="Enter webhook url"
+            name="webhookUrl"
+            value={formFields.webhookUrl}
+            onChange={handleInputChange}
+          />
+        </FormField>
+      </Scroller>
 
       <Button
         shape="curved"

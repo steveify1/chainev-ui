@@ -14,31 +14,20 @@ import { useEffect, useState } from "react";
 import { Project } from "../../shared/Project/Project";
 import { Section } from "../../shared/Section/Section";
 import { Events } from "../../shared/Events/Events";
+import { toast } from "react-toastify";
+import api from "../../../utils/api";
 
 export const HomePage = () => {
   const [recentProjects, setRecentProjects] = useState<any[]>([]);
 
   const fetchRecentProjects = async () => {
-    setRecentProjects([
-      {
-        id: "dfdffd",
-        name: "IvoryPay PG",
-        numEnvironments: 2,
-        numEvents: 8,
-      },
-      {
-        id: "dfdffd",
-        name: "IvoryPay PG",
-        numEnvironments: 2,
-        numEvents: 8,
-      },
-      {
-        id: "dfdffd",
-        name: "IvoryPay PG",
-        numEnvironments: 2,
-        numEvents: 8,
-      },
-    ]);
+    try {
+      const response = await api.getProjects({ limit: 3 });
+      const { records } = response.data;
+      setRecentProjects(records);
+    } catch (error: any) {
+      toast(error.message);
+    }
   };
 
   useEffect(() => {

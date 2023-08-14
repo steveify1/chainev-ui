@@ -24,7 +24,7 @@ export const Button = (props: ButtonProps) => {
         return styles.square;
 
       default:
-        return styles.curved;
+        return styles.oval;
     }
   };
 

@@ -1,8 +1,7 @@
 import styles from "./Events.module.scss";
 import { Button } from "../Buttons/Button";
-import { Link } from "../Link/Link";
 import { Card } from "../Card/Card";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Modal } from "../Modal/Modal";
 import { navigator } from "../../../utils/navigator.utils";
 import dynamic from "next/dynamic";
@@ -43,6 +42,7 @@ export const Event = (props: EventProps) => {
         <p className={styles.createdAt}>{props.createdAt}</p>
 
         <Button
+          shape="oval"
           className={`${styles.networkType} ${
             props.networkType === "MAINNET" ? styles.mainnet : null
           }`}
@@ -54,13 +54,22 @@ export const Event = (props: EventProps) => {
           <Modal
             title={props.name}
             trigger={
-              <Button className={styles.payloadButton} type="secondary">
+              <Button
+                className={styles.payloadButton}
+                type="secondary"
+                shape="oval"
+              >
                 View Payload
               </Button>
             }
           >
             <div className={styles.copyButtonContainer}>
-              <Button size="small" className={styles.copyButton} onClick={copy}>
+              <Button
+                size="small"
+                className={styles.copyButton}
+                onClick={copy}
+                shape="oval"
+              >
                 <img
                   src="/copy.png"
                   className={styles.copyIcon}

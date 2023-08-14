@@ -27,9 +27,10 @@
         max-height: 90%;
         width: 100%;
         max-width: 600px;
-        top: 50%;
+        top: 40%;
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate(-50%, -40%);
+        z-index: 99;
     
         .modalContentHeader {
           display: flex;

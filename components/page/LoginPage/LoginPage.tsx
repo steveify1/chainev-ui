@@ -9,8 +9,51 @@ import {
 } from "../../shared/FormSet/FormField";
 import { Card } from "../../shared/Card/Card";
 import { Link } from "../../shared/Link/Link";
+import { useState } from "react";
+import api from "../../../utils/api";
+import { toast } from "react-toastify";
+import { useRouter } from "next/router";
+import useLocalStorage from "use-local-storage";
+import { navigator } from "../../../utils/navigator.utils";
+
+const initialFormData = {
+  email: "",
+  password: "",
+};
 
 export const LoginPage = () => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [formData, setFormData] = useState(initialFormData);
+
+  const handleInputChange = (e: any) => {
+    const {
+      target: { name, value },
+    } = e;
+    setFormData((prev) => {
+      return { ...prev, [name]: value };
+    });
+  };
+
+  const handleFormSubmission = async (e: any) => {
+    e.preventDefault();
+
+    if (isLoading) return;
+    setIsLoading(true);
+
+    try {
+      const response = await api.login(formData);
+      navigator.localStorage.set("auth", JSON.stringify(response.data));
+      navigator.localStorage.set("token", response.data.token);
+
+      router.push("/");
+    } catch (error: any) {
+      toast(error.message, { type: "error" });
+    }
+
+    setIsLoading(false);
+  };
+
   return (
     <PageWapper>
       <Container>
@@ -27,21 +70,33 @@ export const LoginPage = () => {
 
           <form>
             <FormField label="Email">
-              <Input type="email" placeholder="Enter your email" />
+              <Input
+                name="email"
+                type="email"
+                placeholder="Enter your email"
+                value={formData.email}
+                onChange={handleInputChange}
+              />
             </FormField>
 
             <FormField label="Password">
               <PasswordInput
+                name="password"
                 placeholder="Enter your password"
                 useToggle={true}
+                value={formData.password}
+                onChange={handleInputChange}
               />
             </FormField>
 
-            <Link href="/">
-              <Button shape="curved" className={styles.button} size="large">
-                Login
-              </Button>
-            </Link>
+            <Button
+              shape="curved"
+              className={styles.button}
+              size="large"
+              onClick={handleFormSubmission}
+            >
+              {isLoading ? "Please wait" : "Login"}
+            </Button>
           </form>
         </Card>
       </Container>

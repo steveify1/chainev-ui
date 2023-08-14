@@ -6,9 +6,11 @@ import { NavAuthButton } from "../Buttons";
 import { Modal } from "../Modal/Modal";
 import { CreateProjectForm } from "../FormSet/CreateProjectForm";
 import Link from "next/link";
+import { useContext } from "react";
+import { AuthContext } from "../../../utils/context";
 
 export const Nav = () => {
-  const isLogged = true;
+  const authState = useContext(AuthContext);
 
   return (
     <div className={styles.nav}>
@@ -19,7 +21,7 @@ export const Nav = () => {
           </Link>
 
           <div className={styles.navRight}>
-            {isLogged ? (
+            {authState ? (
               <Modal
                 title="Create Project"
                 trigger={<Button shape="oval">Create Project</Button>}
