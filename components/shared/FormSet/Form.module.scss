@@ -114,8 +114,13 @@
   grid-template-columns: 1fr 1fr;
   column-gap: 1rem;
 
+
   .networkTypeInputContainer {
     position: relative;
+
+    &.networkTypeInputDisabled {
+      opacity: 0.55;
+    }
 
     span {
       position: absolute;

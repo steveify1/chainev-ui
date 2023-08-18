@@ -15,7 +15,7 @@ interface CreateProjectInput {
   webhookUrl: string;
 }
 
-interface AddProjectEventInput {
+interface AddProjectEnvironmentInput {
   networkType: string;
   address: string;
   webhookUrl: string;
@@ -76,6 +76,40 @@ class API {
         headers: this.resolveHeaders(),
         params: { ...query },
       });
+
+      return response.data;
+    } catch (error: any) {
+      this.handleError(error);
+    }
+  }
+
+  async getProject(projectId: string) {
+    try {
+      const response = await axios.get(
+        `${this.baseUrl}/projects/${projectId}`,
+        {
+          headers: this.resolveHeaders(),
+        }
+      );
+
+      return response.data;
+    } catch (error: any) {
+      this.handleError(error);
+    }
+  }
+
+  async addProjectEnvironment(
+    projectId: string,
+    body: AddProjectEnvironmentInput
+  ) {
+    try {
+      const response = await axios.post(
+        `${this.baseUrl}/projects/${projectId}/environments`,
+        body,
+        {
+          headers: this.resolveHeaders(),
+        }
+      );
 
       return response.data;
     } catch (error: any) {

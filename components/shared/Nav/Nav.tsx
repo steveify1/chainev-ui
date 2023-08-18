@@ -4,10 +4,11 @@ import styles from "./Nav.module.scss";
 import { Button } from "../Buttons/Button";
 import { NavAuthButton } from "../Buttons";
 import { Modal } from "../Modal/Modal";
-import { CreateProjectForm } from "../FormSet/CreateProjectForm";
+
 import Link from "next/link";
 import { useContext } from "react";
 import { AuthContext } from "../../../utils/context";
+import { CreateProjectForm } from "../CreateProjectForm/CreateProjectForm";
 
 export const Nav = () => {
   const authState = useContext(AuthContext);

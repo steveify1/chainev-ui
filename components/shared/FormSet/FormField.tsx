@@ -26,6 +26,7 @@ interface PasswordInputProps
 interface NetworkTypeInputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   selected?: ReactEventHandler;
+  existingNetworkTypes?: string[];
 }
 
 interface CheckboxInputProps
@@ -226,9 +227,12 @@ export const CheckboxInput = (props: CheckboxInputProps) => {
 };
 
 export const NetworkTypeRadioInput = (props: NetworkTypeInputProps) => {
+  const existingNetworkTypes = props.existingNetworkTypes || [];
   const [selected, setSelected] = useState<string>("");
 
   const handleSelection = (e: any) => {
+    console.log(e.target.disabled);
+    if (e.target.disabled) return;
     setSelected(e.target.value);
 
     if (typeof props.onChange === "function") {
@@ -242,23 +246,30 @@ export const NetworkTypeRadioInput = (props: NetworkTypeInputProps) => {
 
   return (
     <ul className={styles.networkTypesInputContainer}>
-      {networkTypes.map((networkType, i) => (
-        <li
-          key={`network-type-input-container-${i}`}
-          className={`${styles.networkTypeInputContainer} ${
-            networkType.containerClassName
-          } ${isSelected(networkType.value)}`}
-        >
-          <span>{networkType.name}</span>
-          <Input
-            {...props}
-            className={`${styles.input} ${styles.networkTypeInput}  ${props.className}`}
-            value={networkType.value}
-            onClick={handleSelection}
-          />
-          <div className={styles.networkTypeInputIndicator}></div>
-        </li>
-      ))}
+      {networkTypes.map((networkType, i) => {
+        const isDisabled = existingNetworkTypes.includes(networkType.value);
+
+        return (
+          <li
+            key={`network-type-input-container-${i}`}
+            className={`${styles.networkTypeInputContainer} ${
+              networkType.containerClassName
+            } ${isSelected(networkType.value)}
+            ${isDisabled ? styles.networkTypeInputDisabled : null}
+            `}
+          >
+            <span>{networkType.name}</span>
+            <Input
+              {...props}
+              className={`${styles.input} ${styles.networkTypeInput}  ${props.className}`}
+              value={networkType.value}
+              onClick={handleSelection}
+              disabled={isDisabled}
+            />
+            <div className={styles.networkTypeInputIndicator}></div>
+          </li>
+        );
+      })}
     </ul>
   );
 };

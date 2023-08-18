@@ -5,14 +5,12 @@ import {
   FormField,
   Input,
   NetworkTypeRadioInput,
-} from "./FormField";
-import { navigator } from "../../../utils/navigator.utils";
+} from "../FormSet/FormField";
 import { Button } from "../Buttons";
 import styles from "./CreateProjectForm.module.scss";
 import api from "../../../utils/api";
 import { toast } from "react-toastify";
 import { Scroller } from "../Scroller/Scroller";
-import { AuthContext } from "../../../utils/context";
 import { useRouter } from "next/router";
 
 const initialFormData = {
