@@ -5,79 +5,46 @@ import Image from "next/image";
 import { Card } from "../Card/Card";
 import { useEffect, useState } from "react";
 import { Event } from "./Event";
+import api from "../../../utils/api";
+import ReactPaginate from "react-paginate";
 
 interface EventsProps {
   className?: string;
   projectId?: string;
+  environmentId?: string;
   networkType?: string;
   limit?: number;
 }
 
 export const Events = (props: EventsProps) => {
+  const limit = props.limit || 10;
   const [events, setEvents] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-
-  console.log({ props });
+  const [totalMatches, setTotalMatches] = useState<number>(0);
+  const [page, setPage] = useState<number>(0);
 
   const fetchEvents = async () => {
     if (isLoading) return;
     setIsLoading(true);
 
     try {
-      setEvents([
-        {
-          name: "Transfer",
-          createdAt: new Date().toDateString(),
-          networkType: "TESTNET",
-          payload: {
-            transactionHash: "00xxxxxxxxxxxxxxxx",
-          },
-        },
-        {
-          name: "Mint",
-          createdAt: new Date().toDateString(),
-          networkType: "TESTNET",
-          payload: {
-            transactionHash: "01xxxxxxxxxxxxxxxx",
-          },
-        },
-        {
-          name: "Transfer",
-          createdAt: new Date().toDateString(),
-          networkType: "MAINNET",
-          payload: {
-            transactionHash: "02xxxxxxxxxxxxxxxx",
-            blocks: [
-              {
-                hash: "020xxxxxxxxxxxxxxxx",
-                height: 20000,
-                completed: false,
-              },
-              {
-                hash: "021xxxxxxxxxxxxxxxx",
-                height: 20000,
-                completed: true,
-              },
-            ],
-          },
-        },
-        {
-          name: "Swap",
-          createdAt: new Date().toDateString(),
-          networkType: "MAINNET",
-          payload: {
-            transactionHash: "03xxxxxxxxxxxxxxxx",
-          },
-        },
-        {
-          name: "Transfer",
-          createdAt: new Date().toDateString(),
-          networkType: "TESTNET",
-          payload: {
-            transactionHash: "04xxxxxxxxxxxxxxxx",
-          },
-        },
-      ]);
+      const query: any = { limit, page: page + 1 };
+
+      if (props.projectId) {
+        query.projectId = props.projectId;
+      }
+
+      if (props.environmentId) {
+        query.environmentId = props.environmentId;
+      }
+
+      if (props.networkType) {
+        query.networkType = props.networkType;
+      }
+
+      const response = await api.getProjectEvents(query);
+      setEvents(response.data.records);
+      setTotalMatches(response.data.count);
     } catch (error) {
       console.log(error);
     }
@@ -87,7 +54,7 @@ export const Events = (props: EventsProps) => {
 
   useEffect(() => {
     fetchEvents();
-  }, []);
+  }, [props.networkType, page]);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -98,12 +65,28 @@ export const Events = (props: EventsProps) => {
       {events.map((event, i) => (
         <Event
           key={`event-${i}`}
-          name={event.name}
+          name={event.payload.eventName}
           networkType={event.networkType}
           createdAt={event.createdAt}
           payload={event.payload}
         />
       ))}
+
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel=">"
+        onPageChange={(e) => setPage(e.selected)}
+        pageRangeDisplayed={4}
+        pageCount={totalMatches / limit}
+        previousLabel="<"
+        renderOnZeroPageCount={null}
+        className={styles.pagination}
+        containerClassName={styles.paginationContainer}
+        pageLinkClassName={styles.paginationPage}
+        nextLinkClassName={styles.paginationNextButton}
+        previousLinkClassName={styles.paginationPreviousButton}
+        activeLinkClassName={styles.paginationActivePage}
+      />
     </div>
   );
 };

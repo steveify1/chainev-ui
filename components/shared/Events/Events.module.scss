@@ -61,3 +61,32 @@
   }
 }
 
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.2rem;
+
+  .paginationContainer {
+    background-color: #000;
+  }
+
+  .paginationPage,
+  .paginationNextButton,
+  .paginationPreviousButton {
+    padding: 0.5rem 0.75rem;
+    background-color: $lightGrey;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $grey;
+    }
+  }
+
+  .paginationActivePage {
+    background-color: $primaryColor;
+    color: #fff;
+    font-weight: 600;
+  }
+}

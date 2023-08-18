@@ -70,10 +70,24 @@ class API {
     }
   }
 
-  async getProjects(query: any) {
+  async getProjects(query: any = {}) {
     try {
       const response = await axios.get(`${this.baseUrl}/projects`, {
         headers: this.resolveHeaders(),
+        params: { ...query },
+      });
+
+      return response.data;
+    } catch (error: any) {
+      this.handleError(error);
+    }
+  }
+
+  async getProjectEvents(query: any) {
+    try {
+      const response = await axios.get(`${this.baseUrl}/project-events`, {
+        headers: this.resolveHeaders(),
+        params: { ...query },
       });
 
       return response.data;

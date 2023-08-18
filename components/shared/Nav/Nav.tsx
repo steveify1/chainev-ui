@@ -21,7 +21,7 @@ export const Nav = () => {
           </Link>
 
           <div className={styles.navRight}>
-            {authState ? (
+            {authState?.token ? (
               <Modal
                 title="Create Project"
                 trigger={<Button shape="oval">Create Project</Button>}

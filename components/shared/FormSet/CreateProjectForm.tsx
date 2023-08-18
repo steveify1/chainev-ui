@@ -13,6 +13,7 @@ import api from "../../../utils/api";
 import { toast } from "react-toastify";
 import { Scroller } from "../Scroller/Scroller";
 import { AuthContext } from "../../../utils/context";
+import { useRouter } from "next/router";
 
 const initialFormData = {
   name: "",
@@ -24,6 +25,7 @@ const initialFormData = {
 };
 
 export const CreateProjectForm = () => {
+  const router = useRouter();
   const [formFields, setFormFields] = useState(initialFormData);
   const [availableEventNames, setAvailableEventNames] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -95,6 +97,7 @@ export const CreateProjectForm = () => {
 
     try {
       const response = await api.createProject(formFields);
+      router.push(`/projects/${response.data.uuid}`);
     } catch (error: any) {
       toast(error.message, { type: "error" });
     }
