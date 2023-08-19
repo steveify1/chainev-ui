@@ -6,6 +6,14 @@ interface LoginInput {
   password: string;
 }
 
+interface RegisterInput {
+  firstName: string;
+  lastName: string;
+  businessName: string;
+  email: string;
+  password: string;
+}
+
 interface CreateProjectInput {
   name: string;
   abi: string;
@@ -52,6 +60,15 @@ class API {
   async login(body: LoginInput) {
     try {
       const response = await axios.post(`${this.baseUrl}/auth/login`, body);
+      return response.data;
+    } catch (error: any) {
+      this.handleError(error);
+    }
+  }
+
+  async register(body: RegisterInput) {
+    try {
+      const response = await axios.post(`${this.baseUrl}/auth/register`, body);
       return response.data;
     } catch (error: any) {
       this.handleError(error);

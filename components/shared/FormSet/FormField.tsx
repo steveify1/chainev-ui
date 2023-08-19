@@ -15,7 +15,7 @@ interface FormFieldProps {
 
 interface CheckboxInputOption {
   label: string;
-  value: string;
+  value: any;
 }
 
 interface PasswordInputProps
@@ -218,7 +218,7 @@ export const CheckboxInput = (props: CheckboxInputProps) => {
               onChange={handleChange}
             />
             <span className={styles.checkboxInputGeekmark}></span>
-            <span>{option.label}</span>
+            <span className={styles.checkboxLabel}>{option.label}</span>
           </label>
         ))}
       </fieldset>
