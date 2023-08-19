@@ -11,6 +11,8 @@ import { toast } from "react-toastify";
 import api from "../../../utils/api";
 import { Modal } from "../../shared/Modal/Modal";
 import { AddProjectEnvironmentForm } from "../../shared/AddProjectEnvironmentForm/AddProjectEnvironmentForm";
+import { Loader } from "../../shared/Loader/Loader";
+import { EmptyStateContainer } from "../../shared/EmptyStateContainer/EmptyStateContainer";
 
 export const ProjectDetailPage = () => {
   const router = useRouter();
@@ -38,7 +40,7 @@ export const ProjectDetailPage = () => {
       const response = await api.getProject(router.query?.id as string);
       setProject(response.data);
     } catch (error: any) {
-      toast(error.message, { type: "error" });
+      // toast(error.message, { type: "error" });
     }
 
     setIsLoading(false);
@@ -53,8 +55,6 @@ export const ProjectDetailPage = () => {
     } catch (error: any) {
       toast(error.message, { type: "error" });
     }
-
-    setIsLoading(false);
   };
 
   const handleProjectEnvCreationSuccess = (data: any) => {
@@ -67,16 +67,21 @@ export const ProjectDetailPage = () => {
   };
 
   useEffect(() => {
+    if (project) {
+      fetchProjectEventCount();
+    }
+  }, [project]);
+
+  useEffect(() => {
     if (router.query.id) {
       fetchProject();
-      fetchProjectEventCount();
     }
   }, [router.query.id]);
 
   return (
     <DashboardContainer>
       {isLoading ? (
-        <p>loading...</p>
+        <Loader />
       ) : (
         <div>
           <Section>
@@ -100,8 +105,8 @@ export const ProjectDetailPage = () => {
                 >
                   {showProjectEnvForm ? (
                     <AddProjectEnvironmentForm
-                      projectId={project.uuid}
-                      existingEnvironmentNetworkTypes={project.environments.map(
+                      projectId={project?.uuid}
+                      existingEnvironmentNetworkTypes={project?.environments.map(
                         (env: any) => env.networkType
                       )}
                       onSuccess={handleProjectEnvCreationSuccess}
@@ -112,33 +117,45 @@ export const ProjectDetailPage = () => {
               </div>
             </header>
           </Section>
-
+          {!project && (
+            <EmptyStateContainer message="We couldn't find this project." />
+          )}
           <Section>
             <Card className={styles.projectStatsCard}>
               <ul className={styles.projectStats}>
                 <li className={styles.projectStat}>
                   <h5 className={styles.projectStatName}>Date Created</h5>
-                  <p className={styles.projectStatValue}>
-                    {new Date(project.createdAt).toDateString()}
-                  </p>
+                  {project && (
+                    <p className={styles.projectStatValue}>
+                      {new Date(project?.createdAt).toDateString()}
+                    </p>
+                  )}
                 </li>
                 <li className={styles.projectStat}>
                   <h5 className={styles.projectStatName}>Environments</h5>
                   <p className={styles.projectStatValue}>
-                    {project.environments?.length}
+                    {project?.environments?.length}
                   </p>
                 </li>
                 <li className={styles.projectStat}>
                   <h5 className={styles.projectStatName}>Events Listeners</h5>
                   <p className={styles.projectStatValue}>
-                    {project.eventNames?.length}
+                    {project?.eventNames?.length}
                   </p>
                 </li>
                 <li className={styles.projectStat}>
                   <h5 className={styles.projectStatName}>Total Events</h5>
-                  <p className={styles.projectStatValue}>
-                    {eventCount === null ? <i>Loading</i> : eventCount}
-                  </p>
+                  {project && (
+                    <p className={styles.projectStatValue}>
+                      {eventCount === null ? (
+                        <small>
+                          <i>Loading...</i>
+                        </small>
+                      ) : (
+                        eventCount
+                      )}
+                    </p>
+                  )}
                 </li>
               </ul>
             </Card>
@@ -169,7 +186,11 @@ export const ProjectDetailPage = () => {
 
           <Section>
             <div className={styles.events}>
-              <Events {...eventFilter} projectId={router.query.id} />
+              {project ? (
+                <Events {...eventFilter} projectId={router.query.id} />
+              ) : (
+                <EmptyStateContainer />
+              )}
             </div>
           </Section>
         </div>

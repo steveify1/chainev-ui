@@ -1,0 +1,12 @@
+@import '../../../styles/variables.scss';
+
+.emptyStateContainer {
+  width: 100%;
+  margin: 0 auto;
+  padding: 0 calc(14px + 1rem);
+  text-align: center;
+
+  p {
+    color: #6e6e6e;
+  }
+}

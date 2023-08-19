@@ -1,0 +1,13 @@
+@import '../../../styles/variables.scss';
+
+.loaderContainer {
+  width: 100%;
+  max-width: 1750px;
+  display: flex;
+  justify-content: center;
+  padding: 0 calc(14px + 1rem);
+
+  .loader {
+    color: $primaryColor;
+  }
+}

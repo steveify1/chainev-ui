@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { Event } from "./Event";
 import api from "../../../utils/api";
 import ReactPaginate from "react-paginate";
+import { EmptyStateContainer } from "../EmptyStateContainer/EmptyStateContainer";
+import { Loader } from "../Loader/Loader";
 
 interface EventsProps {
   className?: string;
@@ -57,36 +59,42 @@ export const Events = (props: EventsProps) => {
   }, [props.networkType, page]);
 
   if (isLoading) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
 
   return (
-    <div className={`${styles.events} ${props.className}`}>
-      {events.map((event, i) => (
-        <Event
-          key={`event-${i}`}
-          name={event.payload.eventName}
-          networkType={event.networkType}
-          createdAt={event.createdAt}
-          payload={event.payload}
-        />
-      ))}
+    <div>
+      {events.length ? (
+        <div className={`${styles.events} ${props.className}`}>
+          {events.map((event, i) => (
+            <Event
+              key={`event-${i}`}
+              name={event.payload.eventName}
+              networkType={event.networkType}
+              createdAt={event.createdAt}
+              payload={event.payload}
+            />
+          ))}
 
-      <ReactPaginate
-        breakLabel="..."
-        nextLabel=">"
-        onPageChange={(e) => setPage(e.selected)}
-        pageRangeDisplayed={4}
-        pageCount={totalMatches / limit}
-        previousLabel="<"
-        renderOnZeroPageCount={null}
-        className={styles.pagination}
-        containerClassName={styles.paginationContainer}
-        pageLinkClassName={styles.paginationPage}
-        nextLinkClassName={styles.paginationNextButton}
-        previousLinkClassName={styles.paginationPreviousButton}
-        activeLinkClassName={styles.paginationActivePage}
-      />
+          <ReactPaginate
+            breakLabel="..."
+            nextLabel=">"
+            onPageChange={(e) => setPage(e.selected)}
+            pageRangeDisplayed={4}
+            pageCount={totalMatches / limit}
+            previousLabel="<"
+            renderOnZeroPageCount={null}
+            className={styles.pagination}
+            containerClassName={styles.paginationContainer}
+            pageLinkClassName={styles.paginationPage}
+            nextLinkClassName={styles.paginationNextButton}
+            previousLinkClassName={styles.paginationPreviousButton}
+            activeLinkClassName={styles.paginationActivePage}
+          />
+        </div>
+      ) : (
+        <EmptyStateContainer message="No events to show" />
+      )}
     </div>
   );
 };

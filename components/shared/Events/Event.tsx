@@ -69,23 +69,23 @@ export const Event = (props: EventProps) => {
             show={showPayload}
             onCloseTriggerClick={() => setShowPayload(false)}
           >
-            <Scroller maxHeight={"70vh"}>
-              <div className={styles.copyButtonContainer}>
-                <Button
-                  size="small"
-                  className={styles.copyButton}
-                  onClick={copy}
-                  shape="oval"
-                >
-                  <img
-                    src="/copy.png"
-                    className={styles.copyIcon}
-                    alt="copy-icon"
-                  />
-                  <span>{copied ? "Copied" : "Copy"}</span>
-                </Button>
-              </div>
+            <div className={styles.copyButtonContainer}>
+              <Button
+                size="small"
+                className={styles.copyButton}
+                onClick={copy}
+                shape="oval"
+              >
+                <img
+                  src="/copy.png"
+                  className={styles.copyIcon}
+                  alt="copy-icon"
+                />
+                <span>{copied ? "Copied" : "Copy"}</span>
+              </Button>
+            </div>
 
+            <Scroller maxHeight={"70vh"}>
               <DynamicReactJson
                 src={props.payload.data}
                 iconStyle="square"

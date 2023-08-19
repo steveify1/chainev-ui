@@ -15,11 +15,17 @@ import { Project } from "../../shared/Project/Project";
 import { Section } from "../../shared/Section/Section";
 import { toast } from "react-toastify";
 import api from "../../../utils/api";
+import { EmptyStateContainer } from "../../shared/EmptyStateContainer/EmptyStateContainer";
+import { Loader } from "../../shared/Loader/Loader";
 
 export const ProjectsPage = () => {
   const [projects, setProjects] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const fetchProjects = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+
     try {
       const response = await api.getProjects({ limit: 10 });
       const { records } = response.data;
@@ -27,6 +33,8 @@ export const ProjectsPage = () => {
     } catch (error: any) {
       toast(error.message);
     }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -35,13 +43,21 @@ export const ProjectsPage = () => {
 
   return (
     <DashboardContainer title="Projects">
-      <Section>
-        <div className={styles.projects}>
-          {projects.map((project, i) => (
-            <Project key={`project-${i}`} project={project} />
-          ))}
-        </div>
-      </Section>
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <Section>
+          {projects.length ? (
+            <div className={styles.projects}>
+              {projects.map((project, i) => (
+                <Project key={`project-${i}`} project={project} />
+              ))}
+            </div>
+          ) : (
+            <EmptyStateContainer message="Umm! Nothing here. All your projects will appear here." />
+          )}
+        </Section>
+      )}
     </DashboardContainer>
   );
 };
