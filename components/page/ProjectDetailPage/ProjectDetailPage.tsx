@@ -88,7 +88,7 @@ export const ProjectDetailPage = () => {
                   className={styles.button}
                   size="small"
                   onClick={() => setShowProjectEnvForm(true)}
-                  disabled={project.environments?.length == 2}
+                  disabled={project?.environments?.length == 2}
                 >
                   Add Environment
                 </Button>

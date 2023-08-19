@@ -231,7 +231,6 @@ export const NetworkTypeRadioInput = (props: NetworkTypeInputProps) => {
   const [selected, setSelected] = useState<string>("");
 
   const handleSelection = (e: any) => {
-    console.log(e.target.disabled);
     if (e.target.disabled) return;
     setSelected(e.target.value);
 

@@ -9,7 +9,6 @@ export const  navigator = {
 
     return new Promise((resolve, reject) => {
       reader.onload = function(e) {
-        console.log(e);
         resolve(e.target.result);
       }
     });
