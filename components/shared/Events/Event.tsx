@@ -24,6 +24,7 @@ const NetworkTypeMap: { [T: string]: string } = {
 
 export const Event = (props: EventProps) => {
   const [copied, setCopied] = useState<boolean>(false);
+  const [showPayload, setShowPayload] = useState<boolean>(false);
 
   const copy = () => {
     if (copied) return;
@@ -54,17 +55,19 @@ export const Event = (props: EventProps) => {
         </Button>
 
         <div className={styles.eventPayloadViewContainer}>
+          <Button
+            onClick={() => setShowPayload(true)}
+            className={styles.payloadButton}
+            type="secondary"
+            shape="oval"
+          >
+            View Payload
+          </Button>
+
           <Modal
             title={props.name}
-            trigger={
-              <Button
-                className={styles.payloadButton}
-                type="secondary"
-                shape="oval"
-              >
-                View Payload
-              </Button>
-            }
+            show={showPayload}
+            onCloseTriggerClick={() => setShowPayload(false)}
           >
             <Scroller maxHeight={"70vh"}>
               <div className={styles.copyButtonContainer}>

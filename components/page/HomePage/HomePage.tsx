@@ -9,6 +9,7 @@ import { Section } from "../../shared/Section/Section";
 import { Events } from "../../shared/Events/Events";
 import { toast } from "react-toastify";
 import api from "../../../utils/api";
+import { Scroller } from "../../shared/Scroller/Scroller";
 
 export const HomePage = () => {
   const [recentProjects, setRecentProjects] = useState<any[]>([]);
@@ -40,15 +41,17 @@ export const HomePage = () => {
             </Link>
           </header>
 
-          <div className={styles.projects}>
-            {recentProjects.map((project, i) => (
-              <Project
-                key={`recent-project-${i}`}
-                className={styles.project}
-                project={project}
-              />
-            ))}
-          </div>
+          <Scroller>
+            <div className={styles.projects}>
+              {recentProjects.map((project, i) => (
+                <Project
+                  key={`recent-project-${i}`}
+                  className={styles.project}
+                  project={project}
+                />
+              ))}
+            </div>
+          </Scroller>
         </Card>
       </Section>
 

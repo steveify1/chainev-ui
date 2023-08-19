@@ -12,6 +12,7 @@ import api from "../../../utils/api";
 import { toast } from "react-toastify";
 import { Scroller } from "../Scroller/Scroller";
 import { useRouter } from "next/router";
+import { CustomFormProps } from "../FormSet";
 
 const initialFormData = {
   name: "",
@@ -22,7 +23,7 @@ const initialFormData = {
   webhookUrl: "",
 };
 
-export const CreateProjectForm = () => {
+export const CreateProjectForm = (props: CustomFormProps) => {
   const router = useRouter();
   const [formFields, setFormFields] = useState(initialFormData);
   const [availableEventNames, setAvailableEventNames] = useState<string[]>([]);
@@ -73,7 +74,7 @@ export const CreateProjectForm = () => {
       if (!parsedEventNames.length) {
         return toast("No events found in ABI", { type: "error" });
       }
-
+      handleAbiFileInputReset(e);
       handleInputChange({ target: { name, value: fileContentAsJSONString } });
       setAvailableEventNames(parsedEventNames);
     }
@@ -85,22 +86,41 @@ export const CreateProjectForm = () => {
     } = e;
     handleInputChange({ target: { name, value: null } });
     setAvailableEventNames([]);
+
+    setFormFields((prev) => {
+      return { ...prev, eventNames: [] };
+    });
+  };
+
+  const handleSuccess = (data: any) => {
+    if (typeof props.onSuccess === "function") {
+      props.onSuccess(data);
+    }
+  };
+
+  const setLoadingState = (value: boolean) => {
+    setIsLoading(value);
+
+    if (typeof props.onProcessingStateChange === "function") {
+      props.onProcessingStateChange(value);
+    }
   };
 
   const handleFormSubmission = async (e: any) => {
     e.preventDefault();
 
     if (isLoading) return;
-    setIsLoading(true);
+    setLoadingState(true);
 
     try {
       const response = await api.createProject(formFields);
+      handleSuccess(response.data);
       router.push(`/projects/${response.data.uuid}`);
     } catch (error: any) {
       toast(error.message, { type: "error" });
     }
 
-    setIsLoading(false);
+    setLoadingState(false);
   };
 
   return (
@@ -178,6 +198,7 @@ export const CreateProjectForm = () => {
         size="large"
         className={styles.submitButton}
         onClick={handleFormSubmission}
+        disabled={isLoading}
       >
         <span>{isLoading ? "Please wait.." : "Create Project"}</span>
       </Button>

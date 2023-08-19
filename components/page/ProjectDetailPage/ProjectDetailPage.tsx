@@ -15,8 +15,11 @@ import { AddProjectEnvironmentForm } from "../../shared/AddProjectEnvironmentFor
 export const ProjectDetailPage = () => {
   const router = useRouter();
   const [project, setProject] = useState<any>();
+  const [eventCount, setEventCount] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [eventFilter, setEventFilter] = useState<any>({});
+  const [showProjectEnvForm, setShowProjectEnvForm] = useState<boolean>(false);
+  const [lockModal, setLockModal] = useState<boolean>(false);
 
   const updateEventFilter = (key: string, value: any) => {
     const filter = { ...eventFilter };
@@ -41,9 +44,32 @@ export const ProjectDetailPage = () => {
     setIsLoading(false);
   };
 
+  const fetchProjectEventCount = async () => {
+    try {
+      const response = await api.getProjectEventCount(
+        router.query?.id as string
+      );
+      setEventCount(response.data.count);
+    } catch (error: any) {
+      toast(error.message, { type: "error" });
+    }
+
+    setIsLoading(false);
+  };
+
+  const handleProjectEnvCreationSuccess = (data: any) => {
+    setShowProjectEnvForm(false);
+
+    setProject((prev: any) => ({
+      ...prev,
+      environments: [...prev.environments, data],
+    }));
+  };
+
   useEffect(() => {
     if (router.query.id) {
       fetchProject();
+      fetchProjectEventCount();
     }
   }, [router.query.id]);
 
@@ -56,23 +82,34 @@ export const ProjectDetailPage = () => {
           <Section>
             <header className={styles.projectHeader}>
               <h3 className={styles.sectionTitle}>{project?.name}</h3>
-              {project.environments.length < 2 ? (
+
+              <div>
+                <Button
+                  className={styles.button}
+                  size="small"
+                  onClick={() => setShowProjectEnvForm(true)}
+                  disabled={project.environments?.length == 2}
+                >
+                  Add Environment
+                </Button>
                 <Modal
                   title="Create Project"
-                  trigger={
-                    <Button className={styles.button} size="small">
-                      Add Environment
-                    </Button>
-                  }
+                  show={showProjectEnvForm}
+                  lock={lockModal}
+                  onCloseTriggerClick={() => setShowProjectEnvForm(false)}
                 >
-                  <AddProjectEnvironmentForm
-                    projectId={project.uuid}
-                    existingEnvironmentNetworkTypes={project.environments.map(
-                      (env: any) => env.networkType
-                    )}
-                  />
+                  {showProjectEnvForm ? (
+                    <AddProjectEnvironmentForm
+                      projectId={project.uuid}
+                      existingEnvironmentNetworkTypes={project.environments.map(
+                        (env: any) => env.networkType
+                      )}
+                      onSuccess={handleProjectEnvCreationSuccess}
+                      onProcessingStateChange={setLockModal}
+                    />
+                  ) : null}
                 </Modal>
-              ) : null}
+              </div>
             </header>
           </Section>
 
@@ -88,19 +125,19 @@ export const ProjectDetailPage = () => {
                 <li className={styles.projectStat}>
                   <h5 className={styles.projectStatName}>Environments</h5>
                   <p className={styles.projectStatValue}>
-                    {project.environments.length}
+                    {project.environments?.length}
                   </p>
                 </li>
                 <li className={styles.projectStat}>
                   <h5 className={styles.projectStatName}>Events Listeners</h5>
                   <p className={styles.projectStatValue}>
-                    {project.eventNames.length}
+                    {project.eventNames?.length}
                   </p>
                 </li>
                 <li className={styles.projectStat}>
                   <h5 className={styles.projectStatName}>Total Events</h5>
                   <p className={styles.projectStatValue}>
-                    {project.numMainnetEvents || 0}
+                    {eventCount === null ? <i>Loading</i> : eventCount}
                   </p>
                 </li>
               </ul>

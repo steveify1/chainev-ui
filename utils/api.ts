@@ -129,6 +129,22 @@ class API {
       this.handleError(error);
     }
   }
+
+  async getProjectEventCount(projectId: string, query: any = {}) {
+    try {
+      const response = await axios.get(
+        `${this.baseUrl}/projects/${projectId}/event-count`,
+        {
+          headers: this.resolveHeaders(),
+          params: { ...query },
+        }
+      );
+
+      return response.data;
+    } catch (error: any) {
+      this.handleError(error);
+    }
+  }
 }
 
 export default new API();

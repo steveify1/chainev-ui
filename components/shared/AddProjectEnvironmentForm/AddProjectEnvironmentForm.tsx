@@ -12,6 +12,7 @@ import api from "../../../utils/api";
 import { toast } from "react-toastify";
 import { Scroller } from "../Scroller/Scroller";
 import { useRouter } from "next/router";
+import { CustomFormProps } from "../FormSet";
 
 const initialFormData = {
   address: "",
@@ -19,7 +20,7 @@ const initialFormData = {
   webhookUrl: "",
 };
 
-interface AddProjectEnvironmentFormProps {
+interface AddProjectEnvironmentFormProps extends CustomFormProps {
   projectId: string;
   existingEnvironmentNetworkTypes: string[];
 }
@@ -40,23 +41,37 @@ export const AddProjectEnvironmentForm = (
     });
   };
 
+  const handleSuccess = (data: any) => {
+    if (typeof props.onSuccess === "function") {
+      props.onSuccess(data);
+    }
+  };
+
+  const setLoadingState = (value: boolean) => {
+    setIsLoading(value);
+
+    if (typeof props.onProcessingStateChange === "function") {
+      props.onProcessingStateChange(value);
+    }
+  };
+
   const handleFormSubmission = async (e: any) => {
     e.preventDefault();
 
     if (isLoading) return;
-    setIsLoading(true);
+    setLoadingState(true);
 
     try {
       const response = await api.addProjectEnvironment(
         props.projectId,
         formFields
       );
-      router.reload();
+      handleSuccess(response.data);
     } catch (error: any) {
       toast(error.message, { type: "error" });
     }
 
-    setIsLoading(false);
+    setLoadingState(false);
   };
 
   return (
@@ -94,8 +109,9 @@ export const AddProjectEnvironmentForm = (
         size="large"
         className={styles.submitButton}
         onClick={handleFormSubmission}
+        disabled={isLoading}
       >
-        <span>{isLoading ? "Please wait.." : "Create Project"}</span>
+        <span>{isLoading ? "Please wait.." : "Add Environment"}</span>
       </Button>
     </form>
   );

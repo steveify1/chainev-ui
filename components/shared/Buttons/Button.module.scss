@@ -14,6 +14,11 @@
   padding: 0.5rem 1.5rem;
   cursor: pointer;
 
+  &:disabled {
+    opacity: 0.5;
+    cursor: default;
+  }
+
   &.primary {
     background-color: #007DFC;
     color: #fff;
