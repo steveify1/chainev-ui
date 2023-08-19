@@ -56,7 +56,7 @@ export const ProjectDetailPage = () => {
           <Section>
             <header className={styles.projectHeader}>
               <h3 className={styles.sectionTitle}>{project?.name}</h3>
-              {project.environments.length == 2 ? (
+              {project.environments.length < 2 ? (
                 <Modal
                   title="Create Project"
                   trigger={
