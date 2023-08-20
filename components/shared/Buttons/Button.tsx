@@ -40,12 +40,19 @@ export const Button = (props: ButtonProps) => {
     }
   };
 
+  const handleClick = (e: any) => {
+    if (!props.disabled && typeof props.onClick === "function") {
+      props.onClick(e);
+    }
+  };
+
   return (
     <button
       className={`
         ${styles.button} ${resolveTypeStyle()} 
         ${resolveShapeStyle()} ${resolveSizeStyle()} ${props.className}`}
-      onClick={props.onClick}
+      onClick={handleClick}
+      disabled={props.disabled}
     >
       {props.children}
     </button>

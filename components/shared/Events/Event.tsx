@@ -5,6 +5,7 @@ import { useState } from "react";
 import { Modal } from "../Modal/Modal";
 import { navigator } from "../../../utils/navigator.utils";
 import dynamic from "next/dynamic";
+import { Scroller } from "../Scroller/Scroller";
 
 const DynamicReactJson = dynamic(import("react-json-view"), { ssr: false });
 
@@ -23,6 +24,7 @@ const NetworkTypeMap: { [T: string]: string } = {
 
 export const Event = (props: EventProps) => {
   const [copied, setCopied] = useState<boolean>(false);
+  const [showPayload, setShowPayload] = useState<boolean>(false);
 
   const copy = () => {
     if (copied) return;
@@ -39,7 +41,9 @@ export const Event = (props: EventProps) => {
       <Card className={styles.eventInner}>
         <h4 className={styles.name}>{props.name}</h4>
 
-        <p className={styles.createdAt}>{props.createdAt}</p>
+        <p className={styles.createdAt}>
+          {new Date(props.createdAt).toLocaleString()}
+        </p>
 
         <Button
           shape="oval"
@@ -51,17 +55,19 @@ export const Event = (props: EventProps) => {
         </Button>
 
         <div className={styles.eventPayloadViewContainer}>
+          <Button
+            onClick={() => setShowPayload(true)}
+            className={styles.payloadButton}
+            type="secondary"
+            shape="oval"
+          >
+            View Payload
+          </Button>
+
           <Modal
             title={props.name}
-            trigger={
-              <Button
-                className={styles.payloadButton}
-                type="secondary"
-                shape="oval"
-              >
-                View Payload
-              </Button>
-            }
+            show={showPayload}
+            onCloseTriggerClick={() => setShowPayload(false)}
           >
             <div className={styles.copyButtonContainer}>
               <Button
@@ -79,13 +85,15 @@ export const Event = (props: EventProps) => {
               </Button>
             </div>
 
-            <DynamicReactJson
-              src={props.payload}
-              iconStyle="square"
-              enableClipboard={false}
-              displayDataTypes={false}
-              displayObjectSize={false}
-            />
+            <Scroller maxHeight={"70vh"}>
+              <DynamicReactJson
+                src={props.payload.data}
+                iconStyle="square"
+                enableClipboard={false}
+                displayDataTypes={false}
+                displayObjectSize={false}
+              />
+            </Scroller>
           </Modal>
         </div>
       </Card>

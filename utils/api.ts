@@ -6,6 +6,14 @@ interface LoginInput {
   password: string;
 }
 
+interface RegisterInput {
+  firstName: string;
+  lastName: string;
+  businessName: string;
+  email: string;
+  password: string;
+}
+
 interface CreateProjectInput {
   name: string;
   abi: string;
@@ -15,7 +23,7 @@ interface CreateProjectInput {
   webhookUrl: string;
 }
 
-interface AddProjectEventInput {
+interface AddProjectEnvironmentInput {
   networkType: string;
   address: string;
   webhookUrl: string;
@@ -58,6 +66,15 @@ class API {
     }
   }
 
+  async register(body: RegisterInput) {
+    try {
+      const response = await axios.post(`${this.baseUrl}/auth/register`, body);
+      return response.data;
+    } catch (error: any) {
+      this.handleError(error);
+    }
+  }
+
   async createProject(body: CreateProjectInput) {
     try {
       const response = await axios.post(`${this.baseUrl}/projects`, body, {
@@ -70,11 +87,75 @@ class API {
     }
   }
 
-  async getProjects(query: any) {
+  async getProjects(query: any = {}) {
     try {
       const response = await axios.get(`${this.baseUrl}/projects`, {
         headers: this.resolveHeaders(),
+        params: { ...query },
       });
+
+      return response.data;
+    } catch (error: any) {
+      this.handleError(error);
+    }
+  }
+
+  async getProject(projectId: string) {
+    try {
+      const response = await axios.get(
+        `${this.baseUrl}/projects/${projectId}`,
+        {
+          headers: this.resolveHeaders(),
+        }
+      );
+
+      return response.data;
+    } catch (error: any) {
+      this.handleError(error);
+    }
+  }
+
+  async addProjectEnvironment(
+    projectId: string,
+    body: AddProjectEnvironmentInput
+  ) {
+    try {
+      const response = await axios.post(
+        `${this.baseUrl}/projects/${projectId}/environments`,
+        body,
+        {
+          headers: this.resolveHeaders(),
+        }
+      );
+
+      return response.data;
+    } catch (error: any) {
+      this.handleError(error);
+    }
+  }
+
+  async getProjectEvents(query: any) {
+    try {
+      const response = await axios.get(`${this.baseUrl}/project-events`, {
+        headers: this.resolveHeaders(),
+        params: { ...query },
+      });
+
+      return response.data;
+    } catch (error: any) {
+      this.handleError(error);
+    }
+  }
+
+  async getProjectEventCount(projectId: string, query: any = {}) {
+    try {
+      const response = await axios.get(
+        `${this.baseUrl}/projects/${projectId}/event-count`,
+        {
+          headers: this.resolveHeaders(),
+          params: { ...query },
+        }
+      );
 
       return response.data;
     } catch (error: any) {

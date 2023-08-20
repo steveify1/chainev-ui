@@ -1,12 +1,5 @@
-import { Container } from "../../shared/Container/Container";
 import styles from "./HomePage.module.scss";
 import { Button } from "../../shared/Buttons/Button";
-import { PageWapper } from "../../shared/PageWrapper/PageWapper";
-import {
-  FormField,
-  Input,
-  PasswordInput,
-} from "../../shared/FormSet/FormField";
 import { Card } from "../../shared/Card/Card";
 import { Link } from "../../shared/Link/Link";
 import { DashboardContainer } from "../../shared/DashboardContainer/DashboardContainer";
@@ -16,11 +9,18 @@ import { Section } from "../../shared/Section/Section";
 import { Events } from "../../shared/Events/Events";
 import { toast } from "react-toastify";
 import api from "../../../utils/api";
+import { Scroller } from "../../shared/Scroller/Scroller";
+import { Loader } from "../../shared/Loader/Loader";
+import { EmptyStateContainer } from "../../shared/EmptyStateContainer/EmptyStateContainer";
 
 export const HomePage = () => {
   const [recentProjects, setRecentProjects] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const fetchRecentProjects = async () => {
+    if (isLoading) return;
+    setIsLoading(true);
+
     try {
       const response = await api.getProjects({ limit: 3 });
       const { records } = response.data;
@@ -28,6 +28,8 @@ export const HomePage = () => {
     } catch (error: any) {
       toast(error.message);
     }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -39,7 +41,7 @@ export const HomePage = () => {
       <Section>
         <Card>
           <header className={styles.recentProjectsHeader}>
-            <h3 className={styles.sectionTitle}>Top Projects</h3>
+            <h3 className={styles.sectionTitle}>Latest Projects</h3>
             <Link href={`/projects`}>
               <Button className={styles.button} size="small" type="secondary">
                 See all
@@ -47,15 +49,25 @@ export const HomePage = () => {
             </Link>
           </header>
 
-          <div className={styles.projects}>
-            {recentProjects.map((project, i) => (
-              <Project
-                key={`recent-project-${i}`}
-                className={styles.project}
-                project={project}
-              />
-            ))}
-          </div>
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <Scroller>
+              {recentProjects.length ? (
+                <div className={styles.projects}>
+                  {recentProjects.map((project, i) => (
+                    <Project
+                      key={`recent-project-${i}`}
+                      className={styles.project}
+                      project={project}
+                    />
+                  ))}
+                </div>
+              ) : (
+                <EmptyStateContainer message="You don't have a project yet." />
+              )}
+            </Scroller>
+          )}
         </Card>
       </Section>
 

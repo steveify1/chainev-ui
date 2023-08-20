@@ -5,6 +5,7 @@ export interface ButtonProps {
   shape?: "curved" | "oval" | "square";
   className?: string;
   onClick?: (e: any) => void;
+  disabled?: boolean;
 }
 export interface NavAuthButtonProps
   extends Exclude<React.HTMLProps<ButtonProps>, "type"> {}

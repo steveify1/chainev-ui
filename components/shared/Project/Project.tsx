@@ -25,7 +25,7 @@ export const Project = (props: ProjectProps) => {
         <h4 className={styles.name}>{props.project?.name}</h4>
 
         <p className={styles.numEnvironments}>
-          {props.project?.numEnvironments || 1} Environments
+          {props.project?.environments?.length} Environments
         </p>
 
         <Button className={styles.button}>
